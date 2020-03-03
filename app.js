@@ -1,17 +1,23 @@
 const figlet = require("figlet");
+const readline = require("readline");
 const { getLocation } = require("./location");
 const { getWeather } = require("./weather");
 
-// const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-//   });
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const getInput = () => {
+  rl.question("Where do you want the weather for: ", function(input) {
+    main(input);
+  });
+};
 
 const main = async input => {
-  // rl.question("Do you want to add, remove, list or leave: ", function(command) {
   const locationObj = await getLocation(input);
   await getWeather(locationObj);
-  //}
+  getInput();
 };
 
 figlet("Weather App", function(err, data) {
@@ -21,5 +27,5 @@ figlet("Weather App", function(err, data) {
     return;
   }
   console.log(data);
-  main(process.argv[2]);
+  getInput();
 });
